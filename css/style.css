@@ -328,6 +328,11 @@ p { margin: 0 0 1.1em; }
 .admin-steps li { padding-left: 6px; }
 .admin-steps b { display: block; font-size: 1.05rem; margin-bottom: 2px; }
 .admin-steps .btn { margin-top: 10px; }
+.admin-card input[type="password"] { width: 100%; max-width: 380px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; color: var(--text); }
+.admin-card input[type="password"]:focus { outline: 3px solid var(--lavender); border-color: var(--violet); }
+.admin-success { color: #2f5d2f; font-weight: 700; margin: 14px 0 0; }
+.admin-manual { margin-top: 26px; border-top: 1px solid rgba(52, 53, 27, .12); padding-top: 18px; }
+.admin-manual summary { cursor: pointer; font: 700 .72rem var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--violet); }
 .admin-images { display: flex; flex-wrap: wrap; gap: 10px; }
 .admin-where { margin: 8px 0 6px; padding-left: 20px; }
 .admin-where code { background: var(--cream-2); padding: 2px 8px; border-radius: 6px; font-size: .92em; }

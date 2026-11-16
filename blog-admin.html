@@ -25,7 +25,7 @@
       <div class="wrap">
         <span class="eyebrow">Réservé à Mirela</span>
         <h1>Espace publication</h1>
-        <p>Écrivez un article (texte, image, actualité), puis suivez les 3 étapes en bas de page pour le mettre en ligne sur le blog.</p>
+        <p>Écrivez un article (texte, image, actualité), puis cliquez sur « Publier sur le site » en bas de page pour le mettre en ligne sur le blog.</p>
       </div>
     </section>
 
@@ -94,8 +94,26 @@
 
       <div class="wrap" style="margin-top:36px">
         <div class="admin-card admin-publish" id="publish">
-          <h2>Mettre en ligne : 3 étapes</h2>
-          <p class="admin-notice" id="dirty-note" hidden>Vous avez des changements pas encore publiés. Ne fermez pas cette page avant d’avoir téléchargé les fichiers ci-dessous.</p>
+          <h2>Mettre en ligne</h2>
+          <p class="admin-notice" id="dirty-note" hidden>Vous avez des changements pas encore publiés. Ne fermez pas cette page avant de les avoir publiés.</p>
+
+          <div id="online" hidden>
+            <p class="admin-hint">Un seul clic : les changements sont envoyés au site, qui se met à jour tout seul.</p>
+            <label for="f-password">Mot de passe</label>
+            <input type="password" id="f-password" autocomplete="current-password">
+            <label class="admin-check" for="f-remember">
+              <input type="checkbox" id="f-remember" checked>
+              Se souvenir du mot de passe sur cet ordinateur
+            </label>
+            <p class="admin-error" id="p-error" role="alert" hidden></p>
+            <p class="admin-success" id="p-ok" role="status" hidden></p>
+            <button class="btn btn-primary" type="button" id="publish-btn">Publier sur le site</button>
+          </div>
+
+          <p class="admin-hint" id="offline-note" hidden>La publication en un clic n’est pas disponible ici (page ouverte depuis un dossier, ou service non configuré). Utilisez la méthode manuelle ci-dessous.</p>
+
+          <details class="admin-manual" id="manual">
+          <summary>Méthode manuelle (en secours) : télécharger les fichiers</summary>
           <ol class="admin-steps">
             <li>
               <b>Téléchargez le fichier des articles.</b>
@@ -114,6 +132,7 @@
               <span class="admin-hint">Puis rechargez la page du blog pour voir le résultat.</span>
             </li>
           </ol>
+          </details>
         </div>
       </div>
     </section>

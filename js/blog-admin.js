@@ -1,7 +1,8 @@
 /* ==========================================================
    Espace publication du blog (page réservée, en français).
-   Le site est statique : cette page prépare les fichiers à mettre en ligne
-   (blog/posts.js + images), elle n'envoie rien sur internet.
+   En ligne : le bouton « Publier sur le site » envoie les changements au service
+   /api/blog (functions/api/blog.js), qui les enregistre dans GitHub.
+   Hors ligne (ou en secours) : la page prépare blog/posts.js + les images à télécharger.
    ========================================================== */
 (function () {
   'use strict';
@@ -188,6 +189,92 @@
 
   window.addEventListener('beforeunload', function (e) {
     if (dirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  /* ---------- Publication en un clic (service /api/blog, voir functions/api/blog.js) ---------- */
+  var base = '';          // version du fichier des articles au moment de l'ouverture (contrôle anti-écrasement)
+  var PW_KEY = 'mlx-admin-pw';
+
+  function storeGet() { try { return localStorage.getItem(PW_KEY) || ''; } catch (e) { return ''; } }
+  function storeSet(v) { try { if (v) localStorage.setItem(PW_KEY, v); else localStorage.removeItem(PW_KEY); } catch (e) { /* ignoré */ } }
+
+  function say(kind, msg) {   // kind : 'error' | 'ok' | ''
+    $('p-error').hidden = kind !== 'error' || !msg;
+    $('p-ok').hidden = kind !== 'ok' || !msg;
+    if (kind === 'error') $('p-error').textContent = msg;
+    if (kind === 'ok') $('p-ok').textContent = msg;
+  }
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () { resolve(String(r.result).split(',')[1] || ''); };
+      r.onerror = function () { reject(new Error('lecture')); };
+      r.readAsDataURL(blob);
+    });
+  }
+
+  function goOnline(data) {
+    posts = data.posts;     // la liste officielle vient du site, pas d'un fichier mis en cache
+    base = data.base;
+    $('online').hidden = false;
+    $('offline-note').hidden = true;
+    $('manual').open = false;
+    $('f-password').value = storeGet();
+    renderAll();
+  }
+
+  function goOffline() {
+    $('online').hidden = true;
+    $('offline-note').hidden = false;
+    $('manual').open = true;
+  }
+
+  if (/^https?:$/.test(location.protocol)) {
+    fetch('/api/blog', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('indisponible')); })
+      .then(function (d) { if (d && Array.isArray(d.posts) && d.base) goOnline(d); else goOffline(); })
+      .catch(goOffline);
+  } else {
+    goOffline();
+  }
+
+  $('publish-btn').addEventListener('click', function () {
+    var btn = this;
+    var pw = $('f-password').value;
+    say('', '');
+    if (!pw) { say('error', 'Saisissez le mot de passe.'); return; }
+    if (!dirty) { say('error', 'Aucun changement à publier.'); return; }
+
+    var ids = Object.keys(images).filter(function (id) { return posts.some(function (p) { return p.id === id; }); });
+    btn.disabled = true;
+    btn.textContent = 'Publication en cours…';
+
+    Promise.all(ids.map(function (id) {
+      return blobToBase64(images[id].blob).then(function (data) { return { path: 'assets/blog/' + images[id].name, data: data }; });
+    })).then(function (imgs) {
+      return fetch('/api/blog', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ password: pw, base: base, posts: posts, images: imgs })
+      });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+    }).then(function (res) {
+      if (!res.ok) { say('error', (res.d && res.d.error) || 'La publication a échoué (code ' + res.status + ').'); return; }
+      base = res.d.base;
+      images = {};
+      dirty = false;
+      $('dirty-note').hidden = true;
+      storeSet($('f-remember').checked ? pw : '');
+      renderAll();
+      say('ok', 'C’est publié ! Le site se met à jour : comptez 1 à 2 minutes avant de voir le changement sur le blog.');
+    }).catch(function () {
+      say('error', 'Impossible de joindre le site. Vérifiez votre connexion internet et réessayez.');
+    }).then(function () {
+      btn.disabled = false;
+      btn.textContent = 'Publier sur le site';
+    });
   });
 
   renderAll();
