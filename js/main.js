@@ -31,6 +31,7 @@
       'b.title': 'Blog',
       'b.intro': 'Texts, images and news from Mirela, shared over time.',
       'b.welcome': 'Welcome to Mirela’s blog. Over time, you will find her news, texts and images here. Thank you for visiting.',
+      'b.admin': 'Post (for the author)',
       'home.feat.title': 'Featured',
       'home.feat.all': 'See all posts',
 
@@ -150,6 +151,7 @@
       'b.title': 'Blogu',
       'b.intro': 'Tekste, imazhe dhe lajme nga Mirela, të ndara me kohë.',
       'b.welcome': 'Mirë se vini në blogun e Mirelës. Këtu, me kalimin e kohës, do të gjeni lajmet e saj, tekste dhe imazhe. Faleminderit për vizitën.',
+      'b.admin': 'Posto (për autoren)',
       'home.feat.title': 'Në ballë',
       'home.feat.all': 'Shiko të gjithë artikujt',
 
@@ -269,6 +271,7 @@
       'b.title': 'Blog',
       'b.intro': 'Testi, immagini e notizie di Mirela, condivisi nel tempo.',
       'b.welcome': 'Benvenuti nel blog di Mirela. Con il tempo, troverete qui le sue novità, testi e immagini. Grazie della visita.',
+      'b.admin': 'Pubblica (per l’autrice)',
       'home.feat.title': 'In evidenza',
       'home.feat.all': 'Vedi tutti gli articoli',
 

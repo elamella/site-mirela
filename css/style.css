@@ -263,6 +263,9 @@ p { margin: 0 0 1.1em; }
 .post-excerpt { margin: 0; color: var(--text); }
 .post-more { margin-top: auto; font: 700 .68rem var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--orange-text); }
 .post-empty { text-align: center; color: var(--muted); padding: 24px 0 8px; }
+.blog-post-wrap { text-align: right; margin: 0 0 14px; }
+.blog-post-btn { display: inline-block; padding: 6px 14px; border: 1px solid rgba(90, 66, 117, .4); border-radius: 999px; font: 700 .62rem var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--violet); opacity: .75; transition: opacity .2s, background .2s, color .2s; }
+.blog-post-btn:hover, .blog-post-btn:focus-visible { opacity: 1; background: var(--violet); color: #fff; }
 .blog-welcome { max-width: 720px; margin: 0 auto 36px; padding: 24px 30px; background: var(--mustard-soft); border-radius: var(--radius); text-align: center; font-family: var(--serif); font-style: italic; font-size: 1.35rem; line-height: 1.45; color: var(--olive); }
 
 .post-view { max-width: 760px; margin-inline: auto; padding-top: 24px; }
@@ -330,9 +333,11 @@ p { margin: 0 0 1.1em; }
 .admin-steps .btn { margin-top: 10px; }
 .admin-card input[type="password"] { width: 100%; max-width: 380px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; color: var(--text); }
 .admin-card input[type="password"]:focus { outline: 3px solid var(--lavender); border-color: var(--violet); }
-.admin-success { color: #2f5d2f; font-weight: 700; margin: 14px 0 0; }
-.admin-manual { margin-top: 26px; border-top: 1px solid rgba(52, 53, 27, .12); padding-top: 18px; }
-.admin-manual summary { cursor: pointer; font: 700 .72rem var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--violet); }
+.admin-login { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 36px; padding: 22px 30px; }
+.admin-login label.admin-check { margin: 0 0 14px; }
+.admin-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; max-width: min(92vw, 560px); padding: 14px 22px; border-radius: 12px; background: var(--olive); color: #fff; font-weight: 700; box-shadow: 0 10px 30px rgba(0, 0, 0, .22); text-align: center; }
+.admin-toast.is-error { background: #9b1c1c; }
+.is-busy .admin-pin, .is-busy .admin-del, .is-busy #submit-btn { opacity: .5; pointer-events: none; }
 .admin-images { display: flex; flex-wrap: wrap; gap: 10px; }
 .admin-where { margin: 8px 0 6px; padding-left: 20px; }
 .admin-where code { background: var(--cream-2); padding: 2px 8px; border-radius: 6px; font-size: .92em; }

@@ -1,17 +1,23 @@
 /* ==========================================================
-   Espace publication du blog (page réservée, en français).
-   En ligne : le bouton « Publier sur le site » envoie les changements au service
-   /api/blog (functions/api/blog.js), qui les enregistre dans GitHub.
-   Hors ligne (ou en secours) : la page prépare blog/posts.js + les images à télécharger.
+   Espace publication du blog (page réservée à l'auteur, en français).
+   En ligne : chaque action (publier un article, mettre en avant, supprimer) est
+   envoyée tout de suite au service /api/blog (functions/api/blog.js), protégé par
+   mot de passe, qui l'enregistre dans GitHub ; le site se met à jour tout seul.
+   Hors ligne (page ouverte depuis un dossier, ou service absent) : la page prépare
+   blog/posts.js + les images à télécharger (méthode manuelle).
    ========================================================== */
 (function () {
   'use strict';
 
   var posts = (window.BLOG_POSTS || []).map(function (p) { return JSON.parse(JSON.stringify(p)); });
-  var images = {};            // id -> { name: 'id.jpg', blob: Blob }   (nouvelles images seulement)
-  var dirty = false;
+  var images = {};            // id -> { name: 'id.jpg', blob: Blob }   (images pas encore publiées)
+  var dirty = false;          // (méthode manuelle) changements pas encore téléchargés
   var pendingBlob = null;     // image redimensionnée du formulaire
   var pendingBusy = false;
+  var online = false;         // vrai quand le service de publication répond
+  var busy = false;           // une publication est en cours
+  var base = '';              // version du fichier des articles à l'ouverture (contrôle anti-écrasement)
+  var PW_KEY = 'mlx-admin-pw';
 
   function $(id) { return document.getElementById(id); }
   function h(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -55,7 +61,7 @@
 
   function postsJs() {
     return '/* Articles du blog.\n   Ce fichier est généré par la page « blog-admin.html » (espace publication).\n' +
-      '   Format de date : AAAA-MM-JJ, ou AAAA-MM, ou AAAA.\n   type : actu | texte | photo      lang : fr | en | sq | it */\n' +
+      '   Format de date : AAAA-MM-JJ, ou AAAA-MM, ou AAAA.\n   type : actu | texte | photo | video      lang : fr | en | sq | it */\n' +
       'window.BLOG_POSTS = ' + JSON.stringify(posts, null, 2) + ';\n';
   }
 
@@ -80,6 +86,83 @@
     e.hidden = !msg;
   }
 
+  // petit message en bas de l'écran (visible quel que soit l'endroit de la page)
+  var toastTimer = null;
+  function toast(kind, msg) {
+    var t = $('toast');
+    clearTimeout(toastTimer);
+    t.textContent = msg;
+    t.className = 'admin-toast' + (kind === 'error' ? ' is-error' : '');
+    t.hidden = false;
+    if (kind !== 'error') toastTimer = setTimeout(function () { t.hidden = true; }, 9000);
+  }
+
+  /* ---------- Envoi au site ---------- */
+  function storeGet() { try { return localStorage.getItem(PW_KEY) || ''; } catch (e) { return ''; } }
+  function storeSet(v) { try { if (v) localStorage.setItem(PW_KEY, v); else localStorage.removeItem(PW_KEY); } catch (e) { /* ignoré */ } }
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () { resolve(String(r.result).split(',')[1] || ''); };
+      r.onerror = function () { reject(new Error('lecture')); };
+      r.readAsDataURL(blob);
+    });
+  }
+
+  // Applique un changement. En ligne : l'envoie tout de suite au site (et l'annule si ça échoue).
+  // Hors ligne : le garde pour la méthode manuelle. Renvoie une promesse : true si le changement est pris en compte.
+  function change(mutate, okMsg) {
+    if (!online) { mutate(); markDirty(); renderAll(); return Promise.resolve(true); }
+    if (busy) return Promise.resolve(false);
+    var pw = $('f-password').value;
+    if (!pw) {
+      toast('error', 'Saisissez d’abord le mot de passe, en haut de la page.');
+      $('f-password').focus();
+      return Promise.resolve(false);
+    }
+
+    var snapPosts = JSON.stringify(posts), snapImages = images;
+    images = Object.assign({}, images);
+    mutate();
+    busy = true;
+    document.body.classList.add('is-busy');
+    var submit = $('submit-btn'), label = submit.textContent;
+    submit.textContent = 'Publication en cours…';
+
+    var ids = Object.keys(images).filter(function (id) { return posts.some(function (p) { return p.id === id; }); });
+    return Promise.all(ids.map(function (id) {
+      return blobToBase64(images[id].blob).then(function (data) { return { path: 'assets/blog/' + images[id].name, data: data }; });
+    })).then(function (imgs) {
+      return fetch('/api/blog', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ password: pw, base: base, posts: posts, images: imgs })
+      });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+    }).then(function (res) {
+      if (!res.ok) throw new Error((res.d && res.d.error) || 'La publication a échoué (code ' + res.status + ').');
+      base = res.d.base;
+      images = {};
+      storeSet($('f-remember').checked ? pw : '');
+      toast('ok', okMsg + ' Le blog se met à jour : comptez 1 à 2 minutes.');
+      return true;
+    }).catch(function (err) {
+      posts = JSON.parse(snapPosts);   // on annule le changement : rien n'a été publié
+      images = snapImages;
+      toast('error', err instanceof TypeError ? 'Impossible de joindre le site. Vérifiez votre connexion internet et réessayez.' : err.message);
+      return false;
+    }).then(function (done) {
+      busy = false;
+      document.body.classList.remove('is-busy');
+      submit.textContent = label;
+      renderAll();
+      return done;
+    });
+  }
+
+  /* ---------- Affichage ---------- */
   function renderList() {
     var ul = $('post-list');
     ul.textContent = '';
@@ -96,20 +179,19 @@
       var pin = h('button', 'admin-pin' + (p.pinned ? ' is-on' : ''), p.pinned ? 'Retirer de la une' : 'Mettre en avant');
       pin.type = 'button';
       pin.addEventListener('click', function () {
-        if (p.pinned) delete p.pinned; else p.pinned = true;
-        markDirty();
-        renderAll();
+        var wasPinned = !!p.pinned;
+        change(function () { if (p.pinned) delete p.pinned; else p.pinned = true; }, wasPinned ? 'Retiré de la une.' : 'Mis en avant.');
       });
       actions.appendChild(pin);
 
       var del = h('button', 'admin-del', 'Supprimer');
       del.type = 'button';
       del.addEventListener('click', function () {
-        if (!window.confirm('Supprimer l’article « ' + p.title + ' » ?')) return;
-        posts = posts.filter(function (x) { return x.id !== p.id; });
-        delete images[p.id];
-        markDirty();
-        renderAll();
+        if (!window.confirm('Supprimer l’article « ' + p.title + ' »' + (online ? ' du blog ?' : ' ?'))) return;
+        change(function () {
+          posts = posts.filter(function (x) { return x.id !== p.id; });
+          delete images[p.id];
+        }, 'Article supprimé.');
       });
       actions.appendChild(del);
       li.appendChild(actions);
@@ -154,6 +236,7 @@
 
   $('post-form').addEventListener('submit', function (e) {
     e.preventDefault();
+    var form = this;
     showError('');
     var title = $('f-title').value.trim();
     var text = $('f-text').value.replace(/\r\n/g, '\n').trim();
@@ -163,23 +246,24 @@
     var vid = ytId($('f-video').value);
     if (vid === null) { showError('Ce lien YouTube n’est pas reconnu. Collez l’adresse de la vidéo (par exemple https://www.youtube.com/watch?v=…).'); return; }
 
-    var id = uniqueId(slug(title));
-    var post = { id: id, date: $('f-date').value || today(), type: $('f-type').value, lang: $('f-lang').value, title: title, image: '', text: text };
-    if ($('f-pinned').checked) post.pinned = true;
-    if (vid) post.video = vid;
-    if (pendingBlob) {
-      post.image = 'assets/blog/' + id + '.jpg';
-      images[id] = { name: id + '.jpg', blob: pendingBlob };
-    }
-    posts.push(post);
-    markDirty();
-    renderAll();
-
-    this.reset();
-    $('f-date').value = today();
-    $('f-preview').hidden = true;
-    pendingBlob = null;
-    $('publish').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var blob = pendingBlob;
+    change(function () {
+      var id = uniqueId(slug(title));
+      var post = { id: id, date: $('f-date').value || today(), type: $('f-type').value, lang: $('f-lang').value, title: title, image: '', text: text };
+      if ($('f-pinned').checked) post.pinned = true;
+      if (vid) post.video = vid;
+      if (blob) {
+        post.image = 'assets/blog/' + id + '.jpg';
+        images[id] = { name: id + '.jpg', blob: blob };
+      }
+      posts.push(post);
+    }, 'Article publié !').then(function (done) {
+      if (!done) return;      // en cas d'échec, le formulaire est conservé : rien n'est perdu
+      form.reset();
+      $('f-date').value = today();
+      $('f-preview').hidden = true;
+      pendingBlob = null;
+    });
   });
 
   $('dl-posts').addEventListener('click', function () {
@@ -188,46 +272,26 @@
   });
 
   window.addEventListener('beforeunload', function (e) {
-    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    if (dirty && !online) { e.preventDefault(); e.returnValue = ''; }
   });
 
-  /* ---------- Publication en un clic (service /api/blog, voir functions/api/blog.js) ---------- */
-  var base = '';          // version du fichier des articles au moment de l'ouverture (contrôle anti-écrasement)
-  var PW_KEY = 'mlx-admin-pw';
-
-  function storeGet() { try { return localStorage.getItem(PW_KEY) || ''; } catch (e) { return ''; } }
-  function storeSet(v) { try { if (v) localStorage.setItem(PW_KEY, v); else localStorage.removeItem(PW_KEY); } catch (e) { /* ignoré */ } }
-
-  function say(kind, msg) {   // kind : 'error' | 'ok' | ''
-    $('p-error').hidden = kind !== 'error' || !msg;
-    $('p-ok').hidden = kind !== 'ok' || !msg;
-    if (kind === 'error') $('p-error').textContent = msg;
-    if (kind === 'ok') $('p-ok').textContent = msg;
-  }
-
-  function blobToBase64(blob) {
-    return new Promise(function (resolve, reject) {
-      var r = new FileReader();
-      r.onload = function () { resolve(String(r.result).split(',')[1] || ''); };
-      r.onerror = function () { reject(new Error('lecture')); };
-      r.readAsDataURL(blob);
-    });
-  }
-
+  /* ---------- Quel mode ? ---------- */
   function goOnline(data) {
+    online = true;
     posts = data.posts;     // la liste officielle vient du site, pas d'un fichier mis en cache
     base = data.base;
     $('online').hidden = false;
-    $('offline-note').hidden = true;
-    $('manual').open = false;
+    $('publish').hidden = true;
+    $('submit-btn').textContent = 'Publier l’article';
     $('f-password').value = storeGet();
     renderAll();
   }
 
   function goOffline() {
+    online = false;
     $('online').hidden = true;
-    $('offline-note').hidden = false;
-    $('manual').open = true;
+    $('publish').hidden = false;
+    $('submit-btn').textContent = 'Ajouter l’article';
   }
 
   if (/^https?:$/.test(location.protocol)) {
@@ -238,44 +302,6 @@
   } else {
     goOffline();
   }
-
-  $('publish-btn').addEventListener('click', function () {
-    var btn = this;
-    var pw = $('f-password').value;
-    say('', '');
-    if (!pw) { say('error', 'Saisissez le mot de passe.'); return; }
-    if (!dirty) { say('error', 'Aucun changement à publier.'); return; }
-
-    var ids = Object.keys(images).filter(function (id) { return posts.some(function (p) { return p.id === id; }); });
-    btn.disabled = true;
-    btn.textContent = 'Publication en cours…';
-
-    Promise.all(ids.map(function (id) {
-      return blobToBase64(images[id].blob).then(function (data) { return { path: 'assets/blog/' + images[id].name, data: data }; });
-    })).then(function (imgs) {
-      return fetch('/api/blog', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ password: pw, base: base, posts: posts, images: imgs })
-      });
-    }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
-    }).then(function (res) {
-      if (!res.ok) { say('error', (res.d && res.d.error) || 'La publication a échoué (code ' + res.status + ').'); return; }
-      base = res.d.base;
-      images = {};
-      dirty = false;
-      $('dirty-note').hidden = true;
-      storeSet($('f-remember').checked ? pw : '');
-      renderAll();
-      say('ok', 'C’est publié ! Le site se met à jour : comptez 1 à 2 minutes avant de voir le changement sur le blog.');
-    }).catch(function () {
-      say('error', 'Impossible de joindre le site. Vérifiez votre connexion internet et réessayez.');
-    }).then(function () {
-      btn.disabled = false;
-      btn.textContent = 'Publier sur le site';
-    });
-  });
 
   renderAll();
 })();

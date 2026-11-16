@@ -15,6 +15,7 @@
   if (!root && !homeRoot) return;
   var hero = document.querySelector('.page-hero');
   var welcome = document.getElementById('blog-welcome');
+  var postBtn = document.getElementById('blog-post');   // bouton discret « Poster (réservé) »
   var posts = (window.BLOG_POSTS || []).slice();
 
   var LOCALE = { fr: 'fr-FR', en: 'en-GB', sq: 'sq-AL', it: 'it-IT' };
@@ -56,7 +57,8 @@
   }
 
   function excerpt(t) {
-    var s = String(t || '').replace(/\s+/g, ' ').trim();
+    var first = String(t || '').split(/\n{2,}/)[0];   // l'extrait = le premier paragraphe seulement (la suite se lit dans l'article)
+    var s = first.replace(/\s+/g, ' ').trim();
     return s.length > 170 ? s.slice(0, 167).replace(/\s+\S*$/, '') + '…' : s;
   }
 
@@ -115,6 +117,7 @@
     root.textContent = '';
     if (hero) hero.style.display = '';
     if (welcome) welcome.style.display = '';   // le message de bienvenue reste toujours affiché sur la liste
+    if (postBtn) postBtn.style.display = '';
     var sorted = sortPosts(posts);
     if (!sorted.length) { root.appendChild(h('p', 'post-empty', L[lang()].empty)); return; }
     var grid = h('div', 'post-grid');
@@ -126,6 +129,7 @@
     root.textContent = '';
     if (hero) hero.style.display = 'none';
     if (welcome) welcome.style.display = 'none';   // pas pendant la lecture d'un article
+    if (postBtn) postBtn.style.display = 'none';
     var v = h('article', 'post-view');
     var back = h('a', 'post-back', L[lang()].back);
     back.href = '#';
