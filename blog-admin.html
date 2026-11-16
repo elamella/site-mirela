@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Espace publication — Mirela Leka Xhava</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@500;600;700&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="blog/posts.js" defer></script>
+  <script src="js/blog-admin.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="bar">
+      <a class="brand" href="index.html">Mirela <span>Leka Xhava</span></a>
+      <nav class="nav" aria-label="Navigation"><a href="blog.html">← Voir le blog</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">Réservé à Mirela</span>
+        <h1>Espace publication</h1>
+        <p>Écrivez un article (texte, image, actualité), puis suivez les 3 étapes en bas de page pour le mettre en ligne sur le blog.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:40px">
+      <div class="wrap admin-grid">
+
+        <form class="admin-card" id="post-form" autocomplete="off">
+          <h2>Nouvel article</h2>
+
+          <div class="admin-row">
+            <div>
+              <label for="f-type">Type</label>
+              <select id="f-type">
+                <option value="actu">Actualité</option>
+                <option value="texte">Texte</option>
+                <option value="photo">Photo</option>
+                <option value="video">Vidéo</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-lang">Langue de l’article</label>
+              <select id="f-lang">
+                <option value="fr">Français</option>
+                <option value="sq">Shqip (albanais)</option>
+                <option value="en">English</option>
+                <option value="it">Italiano</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-date">Date</label>
+              <input type="date" id="f-date">
+            </div>
+          </div>
+
+          <label for="f-title">Titre</label>
+          <input type="text" id="f-title" maxlength="120" required>
+
+          <label for="f-text">Texte</label>
+          <textarea id="f-text" rows="9" required></textarea>
+          <p class="admin-hint">Laissez une ligne vide pour commencer un nouveau paragraphe.</p>
+
+          <label for="f-image">Image (facultatif)</label>
+          <input type="file" id="f-image" accept="image/*">
+          <img id="f-preview" alt="" hidden>
+
+          <label for="f-video">Vidéo YouTube (facultatif)</label>
+          <input type="text" id="f-video" placeholder="Collez ici le lien de la vidéo">
+
+          <label class="admin-check" for="f-pinned">
+            <input type="checkbox" id="f-pinned">
+            Mettre en avant cet article (épinglé en haut du blog)
+          </label>
+
+          <p class="admin-error" id="f-error" role="alert" hidden></p>
+          <button class="btn btn-primary" type="submit">Ajouter l’article</button>
+        </form>
+
+        <div>
+          <div class="admin-card">
+            <h2>Articles du blog</h2>
+            <p class="admin-hint" id="count-line"></p>
+            <ul class="admin-list" id="post-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap" style="margin-top:36px">
+        <div class="admin-card admin-publish" id="publish">
+          <h2>Mettre en ligne : 3 étapes</h2>
+          <p class="admin-notice" id="dirty-note" hidden>Vous avez des changements pas encore publiés. Ne fermez pas cette page avant d’avoir téléchargé les fichiers ci-dessous.</p>
+          <ol class="admin-steps">
+            <li>
+              <b>Téléchargez le fichier des articles.</b>
+              <div><button class="btn btn-primary" type="button" id="dl-posts">Télécharger posts.js</button></div>
+            </li>
+            <li>
+              <b>Téléchargez les images ajoutées</b> (s’il y en a).
+              <div id="dl-images" class="admin-images"><span class="admin-hint">Aucune nouvelle image.</span></div>
+            </li>
+            <li>
+              <b>Placez les fichiers dans le dossier du site.</b>
+              <ul class="admin-where">
+                <li><code>posts.js</code> → dossier <code>blog</code> (remplacer l’ancien fichier)</li>
+                <li>chaque image → dossier <code>assets/blog</code></li>
+              </ul>
+              <span class="admin-hint">Puis rechargez la page du blog pour voir le résultat.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Copyright © 2026 Mirela Xhava</footer>
+</body>
+</html>

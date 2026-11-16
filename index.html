@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mirela Leka Xhava — Écrivaine &amp; poétesse franco-albanaise</title>
+  <meta name="description" content="Site de Mirela Leka Xhava, écrivaine et poétesse franco-albanaise : biographie, livres et où les acheter, prix littéraires, entretiens et galerie.">
+  <script>document.documentElement.className += ' js';</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@500;600;700&family=Lato:ital,wght@0,400;0,700;1,400&family=Bonheur+Royale&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="blog/posts.js" defer></script>
+  <script src="js/blog.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body data-title-key="t.index">
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="topbar">
+    <div class="bar">
+      <a class="brand" href="index.html">Mirela <span>Leka Xhava</span></a>
+      <nav class="nav" id="nav" aria-label="Navigation principale">
+        <a href="index.html" data-i18n="nav.home" aria-current="page">Accueil</a>
+        <a href="index.html#bio" data-i18n="nav.bio">À propos</a>
+        <a href="index.html#livres" data-i18n="nav.books">Livres</a>
+        <a href="prix.html" data-i18n="nav.prizes">Prix</a>
+        <a href="entretiens.html" data-i18n="nav.interviews">Entretiens</a>
+        <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        <a href="galerie.html" data-i18n="nav.gallery">Galerie</a>
+        <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+      </nav>
+      <div class="bar-right">
+        <div class="lang">
+          <button class="lang-btn" id="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" data-i18n-aria="lang.label" aria-label="Langue">
+            <span id="lang-code">FR</span>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7l6 6 6-6"/></svg>
+          </button>
+          <ul class="lang-menu" id="lang-menu">
+            <li><button type="button" data-lang="fr">Français</button></li>
+            <li><button type="button" data-lang="en">English</button></li>
+            <li><button type="button" data-lang="sq">Shqip</button></li>
+            <li><button type="button" data-lang="it">Italiano</button></li>
+          </ul>
+        </div>
+        <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" data-i18n-aria="nav.menu" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== Accueil : citation + portrait ===== -->
+    <div class="banner">
+      <img src="assets/img/bandeau-plume.jpg" alt="Plume et lettre manuscrite avec des fleurs" data-i18n-alt="alt.banner" width="2000" height="463">
+    </div>
+
+    <section class="hero" id="accueil">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow" data-i18n="hero.role">Écrivaine et poétesse franco-albanaise</span>
+          <h1 class="hero-name"><span class="cap">M</span>irela Leka Xhava</h1>
+          <blockquote class="hero-quote" data-i18n="hero.quote">La vie est une philosophie et une leçon pour celui qui sait la percevoir.</blockquote>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#livres" data-i18n="hero.cta_books">Découvrir ses livres</a>
+            <a class="btn btn-ghost" href="#bio" data-i18n="hero.cta_bio">Lire sa biographie</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="assets/img/mirela-portrait-1.jpg" alt="Portrait de Mirela Leka Xhava parmi les feuilles d’automne" data-i18n-alt="alt.portrait1" width="960" height="956">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Bandeau de chiffres ===== -->
+    <section class="ticker">
+      <div class="ticker-viewport">
+        <div class="ticker-track">
+          <ul class="ticker-group" data-base>
+            <li><b>5</b><span data-i18n="stat1.l">recueils publiés</span></li>
+            <li><b>14</b><span data-i18n="stat2.l">pays où ses poèmes ont paru</span></li>
+            <li><b>2000</b><span data-i18n="stat3.l">premier recueil publié</span></li>
+            <li><b>2</b><span data-i18n="stat4.l">langues de publication</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Biographie ===== -->
+    <section class="section bio" id="bio">
+      <div class="wrap bio-grid">
+        <aside class="bio-side reveal">
+          <img src="assets/img/mirela-portrait-2.jpg" alt="Portrait en noir et blanc de Mirela Leka Xhava" data-i18n-alt="alt.portrait2" width="1080" height="1079" loading="lazy">
+        </aside>
+        <div class="bio-text reveal">
+          <div class="section-head">
+            <span class="eyebrow" data-i18n="bio.eyebrow">L’autrice</span>
+            <h2 data-i18n="bio.title">À propos</h2>
+          </div>
+          <p data-i18n="bio.p1">Je suis une autrice franco-albanaise, née à Elbasan, en Albanie. Passionnée de littérature depuis l’enfance, mes textes sont publiés ponctuellement dans divers magazines et journaux.</p>
+          <p data-i18n="bio.p2">Diplômée en langue et littérature albanaises de l’Université « A. Xhuvani » d’Elbasan, j’ai travaillé comme bibliothécaire à la bibliothèque universitaire de la ville jusqu’en 2002, avant d’émigrer en France. J’étais alors membre de la Ligue des écrivains d’Elbasan.</p>
+          <p data-i18n="bio.p3">Mes poèmes ont paru dans des revues et journaux prestigieux en Albanie, au Kosovo, en France, en Angleterre, au Canada, aux États-Unis, en Belgique, en Inde, en Tunisie, en Roumanie, en Bulgarie, en Italie, en République dominicaine et aux Pays-Bas, ainsi que sur des sites littéraires français en ligne. Je participe à des salons et des foires du livre, et je suis aussi active dans le champ de la littérature contemporaine.</p>
+          <p data-i18n="bio.p4">Mes textes ont été publiés périodiquement dans la revue littéraire Poètes Sans Frontières « Florilège » (Dijon), sur Poetika17.com, dans la revue RAL-M, dans l’anthologie canadienne de poésie littéraire pour la défense des enfants Ethics and Global Education, dans l’anthologie internationale Poets for Peace (Tunisie), dans l’anthologie Paris Window (vol. 2, Poésie), dans l’anthologie Confessions (Inde), dans les anthologies annuelles Atunis Galaxy Poetry (Belgique), etc.</p>
+
+          <div class="members">
+            <h3 data-i18n="bio.members">Je suis membre de</h3>
+            <ul>
+              <li data-i18n="bio.m1">L’association Les Poètes de l’amitié, Poètes sans frontières – Dijon</li>
+              <li data-i18n="bio.m2">L’Association Francophone de Haïku (AFH)</li>
+              <li data-i18n="bio.m3">L’Association des Poètes Français, depuis 2024</li>
+            </ul>
+          </div>
+
+          <p class="bio-closing" data-i18n="bio.closing">Je travaille actuellement à de nouveaux ouvrages. Je vis avec ma famille à Bordeaux, en France.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Livres ===== -->
+    <section class="section books" id="livres">
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="eyebrow" data-i18n="books.eyebrow">Bibliographie</span>
+          <h2 data-i18n="books.title">Ses livres</h2>
+          <p data-i18n="books.intro">Recueils de poèmes à retrouver en librairie et en ligne.</p>
+        </div>
+
+        <!-- Dernier recueil, mis en avant -->
+        <article class="book-feature reveal">
+          <div class="feature-cover"><img src="assets/img/cover-au-dela-de-soi.jpg" alt="Au-delà de soi" width="942" height="1500"></div>
+          <div class="feature-body">
+            <span class="feature-label" data-i18n="feat.label">Dernier recueil · 2025</span>
+            <h3>Au-delà de soi</h3>
+            <span class="book-tag" data-i18n="tag.fr">Poèmes · français</span>
+            <p class="book-meta">Éditions Maïa, Paris · 2025</p>
+            <p class="feature-desc" data-i18n="feat.desc">Un pont entre deux langues et deux mondes : un témoignage poétique entre émotion et réflexion, où chaque poème invite à un voyage intérieur à travers souvenirs, espoirs et questions d’identité.</p>
+            <div class="feature-links">
+              <a class="btn btn-primary btn-out" href="https://www.amazon.fr/dp/B0FQ9MMH7D" target="_blank" rel="noopener" data-i18n="buy.amazon">Acheter sur Amazon</a>
+              <a class="btn btn-ghost btn-out" href="https://www.editions-maia.com/livre/au-dela-de-soi-mirela-leka-xhava-9791042512538/" target="_blank" rel="noopener" data-i18n="buy.maia">Voir chez Éditions Maïa</a>
+              <a class="btn btn-ghost btn-out" href="https://www.librairie-gallimard.com/livre/9791042512538-au-dela-de-soi-mirela-leka-xhava/" target="_blank" rel="noopener" data-i18n="buy.gallimard">Voir à la Librairie Gallimard</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="book-grid">
+
+          <!-- Voyageur des vents du sud — 2024 (FR) -->
+          <article class="book reveal">
+            <div class="book-cover"><img src="assets/img/cover-voyageur-fr.jpg" alt="Voyageur des vents du sud" width="1417" height="2000" loading="lazy"></div>
+            <div class="book-body">
+              <span class="book-tag" data-i18n="tag.fr_tr">Poèmes · français, traduit de l’albanais</span>
+              <h3>Voyageur des vents du sud</h3>
+              <p class="book-sub" data-i18n="b.voyageur.sub">Version française de « Udhëtar me erën e jugut »</p>
+              <p class="book-meta">Lulu · 2024</p>
+              <div class="book-links">
+                <a class="btn btn-primary btn-out" href="https://www.amazon.fr/dp/B0FGBZDQV2" target="_blank" rel="noopener" data-i18n="buy.kindle">Acheter sur Amazon (Kindle)</a>
+                <a class="btn btn-ghost btn-out" href="https://www.lulu.com/shop/mirela-leka-xhava-and-alba-xhava-and-alba-xhava/voyageur-des-vents-du-sud/paperback/product-q655pz5.html" target="_blank" rel="noopener" data-i18n="buy.lulu_paper">Acheter sur Lulu (broché)</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Udhëtar me erën e jugut — 2024 (SQ) -->
+          <article class="book reveal">
+            <div class="book-cover"><img src="assets/img/cover-udhetar-sq.jpg" alt="Udhëtar me erën e jugut" width="1410" height="1994" loading="lazy"></div>
+            <div class="book-body">
+              <span class="book-tag" data-i18n="tag.sq">Poèmes · albanais</span>
+              <h3>Udhëtar me erën e jugut</h3>
+              <p class="book-sub" data-i18n="b.udhetar.sub">Version albanaise de « Voyageur des vents du sud »</p>
+              <p class="book-meta">Lulu · 2024</p>
+              <div class="book-links">
+                <a class="btn btn-primary btn-out" href="https://www.lulu.com/shop/mirela-xhava-and-alba-xhava-and-agron-shele-and-iliaz-bobaj/udh%C3%ABtar-me-er%C3%ABn-e-jugut/paperback/product-57gmp5q.html" target="_blank" rel="noopener" data-i18n="buy.lulu_paper">Acheter sur Lulu (broché)</a>
+                <a class="btn btn-ghost btn-out" href="https://www.lulu.com/shop/mirela-leka-xhava-and-alba-xhava/udh%C3%ABtar-me-er%C3%ABn-e-jugut/ebook/product-dymwzpm.html" target="_blank" rel="noopener" data-i18n="buy.lulu_ebook">Acheter sur Lulu (ebook)</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Les fleurs de la rue Montesquieu — 2022 -->
+          <article class="book reveal">
+            <div class="book-cover"><img src="assets/img/cover-fleurs-montesquieu.png" alt="Les fleurs de la rue Montesquieu" width="1101" height="1654" loading="lazy"></div>
+            <div class="book-body">
+              <span class="book-tag" data-i18n="tag.bi">Poèmes · bilingue albanais–français</span>
+              <h3>Les fleurs de la rue Montesquieu</h3>
+              <p class="book-sub">Lulet e rrugës Montesquieu</p>
+              <p class="book-meta">Éditions ADA, Tirana · 2022</p>
+              <div class="book-links">
+                <a class="btn btn-primary btn-out" href="https://www.amazon.fr/dp/992836267X" target="_blank" rel="noopener" data-i18n="buy.amazon_both">Acheter sur Amazon (broché &amp; Kindle)</a>
+                <a class="btn btn-ghost btn-out" href="https://bibliotheque.bordeaux.fr/ark:/27705/ca0001570149.locale=fr" target="_blank" rel="noopener" data-i18n="buy.library">Bibliothèque Mériadeck, Bordeaux</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- S'e dua dimrin ne sy — 2000 -->
+          <article class="book reveal">
+            <div class="book-cover"><img src="assets/img/cover-se-dua-dimrin.jpg" alt="S’e dua dimrin ne sy" width="1080" height="1486" loading="lazy"></div>
+            <div class="book-body">
+              <span class="book-tag" data-i18n="tag.sq">Poèmes · albanais</span>
+              <h3>S’e dua dimrin ne sy</h3>
+              <p class="book-sub" data-i18n="b.dimrin.sub">« Je ne veux pas de l’hiver dans mes yeux » — son premier recueil</p>
+              <p class="book-meta">Éditions Egnatia, Tirana · 2000</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== À la une (articles du blog mis en avant ; la section reste cachée s'il n'y en a pas) ===== -->
+    <section class="section featured-home" id="a-la-une" hidden>
+      <div class="wrap">
+        <div class="section-head center">
+          <span class="eyebrow" data-i18n="nav.blog">Blog</span>
+          <h2 data-i18n="home.feat.title">À la une</h2>
+        </div>
+        <div class="home-featured" id="home-featured"></div>
+        <p class="home-featured-all"><a class="btn btn-ghost" href="blog.html" data-i18n="home.feat.all">Voir tous les articles</a></p>
+      </div>
+    </section>
+
+    <!-- ===== Aller plus loin ===== -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head center">
+          <h2 data-i18n="more.title">Aller plus loin</h2>
+        </div>
+        <div class="more-grid">
+          <a class="more-card reveal" href="prix.html">
+            <span class="num">01</span>
+            <h3 data-i18n="p.title">Prix &amp; distinctions</h3>
+            <p data-i18n="more.prizes.text">Concours, festivals et récompenses qui jalonnent son parcours.</p>
+            <span class="go" data-i18n="more.cta">Découvrir</span>
+          </a>
+          <a class="more-card reveal" href="entretiens.html">
+            <span class="num">02</span>
+            <h3 data-i18n="e.title">Entretiens</h3>
+            <p data-i18n="more.int.text">Échanges autour de son écriture, de ses inspirations et de son parcours.</p>
+            <span class="go" data-i18n="more.cta">Découvrir</span>
+          </a>
+          <a class="more-card reveal" href="galerie.html">
+            <span class="num">03</span>
+            <h3 data-i18n="g.title">Galerie</h3>
+            <p data-i18n="more.gal.text">Moments et souvenirs de son parcours littéraire.</p>
+            <span class="go" data-i18n="more.cta">Découvrir</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section class="section contact" id="contact">
+      <div class="wrap-narrow">
+        <span class="eyebrow" data-i18n="contact.eyebrow">Contact</span>
+        <h2 data-i18n="contact.title">Contact</h2>
+        <p data-i18n="contact.text">Pour une rencontre, une lecture, un salon du livre ou une demande de presse, vous pouvez écrire à Mirela par e-mail ou via sa page Facebook.</p>
+        <p class="contact-mail"><a href="mailto:ela_66@hotmail.fr">ela_66@hotmail.fr</a></p>
+        <div class="contact-actions">
+          <a class="btn btn-ghost btn-out" href="mailto:ela_66@hotmail.fr" data-i18n="contact.mail">Écrire par e-mail</a>
+          <a class="btn btn-ghost btn-out" href="https://www.facebook.com/Mirelaxh1" target="_blank" rel="noopener" data-i18n="contact.fb">Écrire sur Facebook</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">Copyright © 2026 Mirela Xhava
+    <span class="credit"><span data-i18n="credit.photo">Photo du bandeau :</span> <a href="https://unsplash.com/photos/DR31squbFoA" target="_blank" rel="noopener">Debby Hudson / Unsplash</a></span>
+  </footer>
+</body>
+</html>

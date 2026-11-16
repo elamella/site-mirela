@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog — Mirela Leka Xhava</title>
+  <meta name="description" content="Le blog de Mirela Leka Xhava : actualités, textes et images.">
+  <script>document.documentElement.className += ' js';</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@500;600;700&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="blog/posts.js" defer></script>
+  <script src="js/blog.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body data-title-key="t.blog">
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="topbar">
+    <div class="bar">
+      <a class="brand" href="index.html">Mirela <span>Leka Xhava</span></a>
+      <nav class="nav" id="nav" aria-label="Navigation principale">
+        <a href="index.html" data-i18n="nav.home">Accueil</a>
+        <a href="index.html#bio" data-i18n="nav.bio">À propos</a>
+        <a href="index.html#livres" data-i18n="nav.books">Livres</a>
+        <a href="prix.html" data-i18n="nav.prizes">Prix</a>
+        <a href="entretiens.html" data-i18n="nav.interviews">Entretiens</a>
+        <a href="blog.html" data-i18n="nav.blog" aria-current="page">Blog</a>
+        <a href="galerie.html" data-i18n="nav.gallery">Galerie</a>
+        <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+      </nav>
+      <div class="bar-right">
+        <div class="lang">
+          <button class="lang-btn" id="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" data-i18n-aria="lang.label" aria-label="Langue">
+            <span id="lang-code">FR</span>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7l6 6 6-6"/></svg>
+          </button>
+          <ul class="lang-menu" id="lang-menu">
+            <li><button type="button" data-lang="fr">Français</button></li>
+            <li><button type="button" data-lang="en">English</button></li>
+            <li><button type="button" data-lang="sq">Shqip</button></li>
+            <li><button type="button" data-lang="it">Italiano</button></li>
+          </ul>
+        </div>
+        <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" data-i18n-aria="nav.menu" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="b.eyebrow">Actualités</span>
+        <h1 data-i18n="b.title">Blog</h1>
+        <p data-i18n="b.intro">Textes, images et nouvelles de Mirela, partagés au fil du temps.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:48px">
+      <div class="wrap">
+        <p class="blog-welcome" id="blog-welcome" data-i18n="b.welcome">Bienvenue sur le blog de Mirela. Vous y trouverez, au fil du temps, ses actualités, des textes et des images. Merci de votre visite.</p>
+        <div id="blog-root" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Copyright © 2026 Mirela Xhava</footer>
+</body>
+</html>
