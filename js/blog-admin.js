@@ -17,6 +17,7 @@
   var online = false;         // vrai quand le service de publication répond
   var busy = false;           // une publication est en cours
   var base = '';              // version du fichier des articles à l'ouverture (contrôle anti-écrasement)
+  var editingId = null;       // identifiant de l'article en cours de modification (null = nouvel article)
   var PW_KEY = 'mlx-admin-pw';
 
   function $(id) { return document.getElementById(id); }
@@ -127,7 +128,7 @@
     mutate();
     busy = true;
     document.body.classList.add('is-busy');
-    var submit = $('submit-btn'), label = submit.textContent;
+    var submit = $('submit-btn');
     submit.textContent = 'Publication en cours…';
 
     var ids = Object.keys(images).filter(function (id) { return posts.some(function (p) { return p.id === id; }); });
@@ -156,7 +157,7 @@
     }).then(function (done) {
       busy = false;
       document.body.classList.remove('is-busy');
-      submit.textContent = label;
+      submit.textContent = submitLabel();
       renderAll();
       return done;
     });
@@ -169,13 +170,18 @@
     var sorted = posts.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
     $('count-line').textContent = sorted.length + (sorted.length > 1 ? ' articles' : ' article');
     sorted.forEach(function (p) {
-      var li = h('li', 'admin-item' + (p.pinned ? ' is-pinned' : ''));
+      var li = h('li', 'admin-item' + (p.pinned ? ' is-pinned' : '') + (p.id === editingId ? ' is-editing' : ''));
       var info = h('div', 'admin-item-info');
       info.appendChild(h('strong', '', p.title));
       info.appendChild(h('span', '', (p.pinned ? 'À la une · ' : '') + (TYPES[p.type] || p.type) + ' · ' + (LANGS[p.lang] || p.lang) + ' · ' + p.date + (p.video ? ' · vidéo' : '') + (images[p.id] ? ' · nouvelle image' : '')));
       li.appendChild(info);
 
       var actions = h('div', 'admin-actions');
+      var edit = h('button', 'admin-edit', 'Modifier');
+      edit.type = 'button';
+      edit.addEventListener('click', function () { startEdit(p.id); });
+      actions.appendChild(edit);
+
       var pin = h('button', 'admin-pin' + (p.pinned ? ' is-on' : ''), p.pinned ? 'Retirer de la une' : 'Mettre en avant');
       pin.type = 'button';
       pin.addEventListener('click', function () {
@@ -213,7 +219,59 @@
   }
 
   function markDirty() { dirty = true; $('dirty-note').hidden = false; }
-  function renderAll() { renderList(); renderImages(); }
+  function renderAll() {
+    if (editingId && !posts.some(function (p) { return p.id === editingId; })) resetForm();   // l'article modifié a disparu (supprimé)
+    renderList(); renderImages();
+  }
+
+  function submitLabel() { return editingId ? 'Enregistrer les modifications' : (online ? 'Publier l’article' : 'Ajouter l’article'); }
+
+  // vide le formulaire et revient au mode « nouvel article »
+  function resetForm() {
+    editingId = null;
+    $('post-form').reset();
+    $('f-date').value = today();
+    $('f-preview').hidden = true;
+    $('f-noimage-wrap').hidden = true;
+    pendingBlob = null;
+    $('form-title').textContent = 'Nouvel article';
+    $('edit-note').hidden = true;
+    $('cancel-edit').hidden = true;
+    $('submit-btn').textContent = submitLabel();
+    showError('');
+  }
+
+  // charge un article déjà publié dans le formulaire pour le modifier
+  function startEdit(id) {
+    var p = posts.filter(function (x) { return x.id === id; })[0];
+    if (!p || busy) return;
+    $('post-form').reset();
+    pendingBlob = null;
+    editingId = id;
+    $('f-type').value = p.type || 'actu';
+    $('f-lang').value = p.lang || 'fr';
+    $('f-date').value = /^\d{4}-\d{2}-\d{2}$/.test(p.date || '') ? p.date : '';
+    $('f-title').value = p.title || '';
+    $('f-text').value = p.text || '';
+    $('f-video').value = p.video || '';
+    $('f-pinned').checked = !!p.pinned;
+    var prev = $('f-preview');
+    var hasImg = !!p.image;
+    prev.hidden = !hasImg;
+    if (hasImg) prev.src = p.image;
+    $('f-noimage-wrap').hidden = !hasImg;
+    $('form-title').textContent = 'Modifier l’article';
+    $('edit-note').textContent = 'Vous modifiez « ' + p.title + ' ». Changez ce que vous voulez, puis cliquez sur « Enregistrer les modifications ».' + (hasImg ? ' L’image actuelle est conservée, sauf si vous en choisissez une autre ou cochez « Retirer l’image ».' : '');
+    $('edit-note').hidden = false;
+    $('cancel-edit').hidden = false;
+    $('submit-btn').textContent = submitLabel();
+    showError('');
+    renderList();
+    $('post-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('f-title').focus({ preventScroll: true });
+  }
+
+  $('cancel-edit').addEventListener('click', function () { resetForm(); renderList(); });
 
   $('f-date').value = today();
 
@@ -223,7 +281,11 @@
     pendingBlob = null;
     prev.hidden = true;
     showError('');
-    if (!f) return;
+    if (!f) {   // fichier retiré : en modification, on réaffiche l'image actuelle
+      var cur = editingId && posts.filter(function (x) { return x.id === editingId; })[0];
+      if (cur && cur.image) { prev.src = cur.image; prev.hidden = false; }
+      return;
+    }
     pendingBusy = true;
     resizeImage(f, 1600, function (blob) {
       pendingBusy = false;
@@ -236,7 +298,6 @@
 
   $('post-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    var form = this;
     showError('');
     var title = $('f-title').value.trim();
     var text = $('f-text').value.replace(/\r\n/g, '\n').trim();
@@ -247,6 +308,33 @@
     if (vid === null) { showError('Ce lien YouTube n’est pas reconnu. Collez l’adresse de la vidéo (par exemple https://www.youtube.com/watch?v=…).'); return; }
 
     var blob = pendingBlob;
+
+    if (editingId) {   // modification d'un article déjà publié (même identifiant, donc même lien)
+      var eid = editingId;
+      change(function () {
+        var p = posts.filter(function (x) { return x.id === eid; })[0];
+        if (!p) return;
+        p.date = $('f-date').value || p.date || today();
+        p.type = $('f-type').value;
+        p.lang = $('f-lang').value;
+        p.title = title;
+        p.text = text;
+        if ($('f-pinned').checked) p.pinned = true; else delete p.pinned;
+        if (vid) p.video = vid; else delete p.video;
+        if (blob) {   // nouvelle image : nouveau nom, pour que les navigateurs n'affichent pas l'ancienne
+          var name = eid.slice(0, 40) + '-' + Date.now().toString(36);
+          p.image = 'assets/blog/' + name + '.jpg';
+          images[eid] = { name: name + '.jpg', blob: blob };
+        } else if ($('f-noimage').checked) {
+          p.image = '';
+          delete images[eid];
+        }
+      }, 'Modifications enregistrées !').then(function (done) {
+        if (done) resetForm();   // en cas d'échec, le formulaire est conservé : rien n'est perdu
+      });
+      return;
+    }
+
     change(function () {
       var id = uniqueId(slug(title));
       var post = { id: id, date: $('f-date').value || today(), type: $('f-type').value, lang: $('f-lang').value, title: title, image: '', text: text };
@@ -258,11 +346,7 @@
       }
       posts.push(post);
     }, 'Article publié !').then(function (done) {
-      if (!done) return;      // en cas d'échec, le formulaire est conservé : rien n'est perdu
-      form.reset();
-      $('f-date').value = today();
-      $('f-preview').hidden = true;
-      pendingBlob = null;
+      if (done) resetForm();      // en cas d'échec, le formulaire est conservé : rien n'est perdu
     });
   });
 
@@ -282,7 +366,7 @@
     base = data.base;
     $('online').hidden = false;
     $('publish').hidden = true;
-    $('submit-btn').textContent = 'Publier l’article';
+    $('submit-btn').textContent = submitLabel();
     $('f-password').value = storeGet();
     renderAll();
   }
@@ -291,7 +375,7 @@
     online = false;
     $('online').hidden = true;
     $('publish').hidden = false;
-    $('submit-btn').textContent = 'Ajouter l’article';
+    $('submit-btn').textContent = submitLabel();
   }
 
   if (/^https?:$/.test(location.protocol)) {

@@ -46,7 +46,8 @@
       <div class="wrap admin-grid" style="margin-top:28px">
 
         <form class="admin-card" id="post-form" autocomplete="off">
-          <h2>Nouvel article</h2>
+          <h2 id="form-title">Nouvel article</h2>
+          <p class="admin-notice" id="edit-note" hidden></p>
 
           <div class="admin-row">
             <div>
@@ -83,6 +84,10 @@
           <label for="f-image">Image (facultatif)</label>
           <input type="file" id="f-image" accept="image/*">
           <img id="f-preview" alt="" hidden>
+          <label class="admin-check admin-check-small" for="f-noimage" id="f-noimage-wrap" hidden>
+            <input type="checkbox" id="f-noimage">
+            Retirer l’image de cet article
+          </label>
 
           <label for="f-video">Vidéo YouTube (facultatif)</label>
           <input type="text" id="f-video" placeholder="Collez ici le lien de la vidéo">
@@ -93,7 +98,10 @@
           </label>
 
           <p class="admin-error" id="f-error" role="alert" hidden></p>
-          <button class="btn btn-primary" type="submit" id="submit-btn">Publier l’article</button>
+          <div class="admin-form-actions">
+            <button class="btn btn-primary" type="submit" id="submit-btn">Publier l’article</button>
+            <button class="btn btn-ghost" type="button" id="cancel-edit" hidden>Annuler la modification</button>
+          </div>
         </form>
 
         <div>

@@ -316,6 +316,11 @@ p { margin: 0 0 1.1em; }
 .admin-pin { background: none; border: 1px solid rgba(90, 66, 117, .5); color: var(--violet); border-radius: 999px; padding: 6px 14px; font: 700 .64rem var(--ui); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
 .admin-pin:hover, .admin-pin.is-on { background: var(--violet); color: #fff; }
 .admin-item.is-pinned { background: var(--mustard-soft); }
+.admin-edit { background: none; border: 1px solid rgba(52, 53, 27, .45); color: var(--olive); border-radius: 999px; padding: 6px 14px; font: 700 .64rem var(--ui); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.admin-edit:hover { background: var(--olive); color: #fff; }
+.admin-item.is-editing { outline: 3px solid var(--lavender); }
+.admin-form-actions { display: flex; flex-wrap: wrap; gap: 0 14px; }
+.admin-card label.admin-check.admin-check-small { margin-top: 12px; font-size: .92rem; }
 .admin-card .btn { margin-top: 22px; }
 #f-preview { max-width: 220px; border-radius: 10px; margin-top: 12px; }
 .admin-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; }
@@ -337,7 +342,7 @@ p { margin: 0 0 1.1em; }
 .admin-login label.admin-check { margin: 0 0 14px; }
 .admin-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; max-width: min(92vw, 560px); padding: 14px 22px; border-radius: 12px; background: var(--olive); color: #fff; font-weight: 700; box-shadow: 0 10px 30px rgba(0, 0, 0, .22); text-align: center; }
 .admin-toast.is-error { background: #9b1c1c; }
-.is-busy .admin-pin, .is-busy .admin-del, .is-busy #submit-btn { opacity: .5; pointer-events: none; }
+.is-busy .admin-pin, .is-busy .admin-del, .is-busy .admin-edit, .is-busy #submit-btn, .is-busy #cancel-edit { opacity: .5; pointer-events: none; }
 .admin-images { display: flex; flex-wrap: wrap; gap: 10px; }
 .admin-where { margin: 8px 0 6px; padding-left: 20px; }
 .admin-where code { background: var(--cream-2); padding: 2px 8px; border-radius: 6px; font-size: .92em; }
