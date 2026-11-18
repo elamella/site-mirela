@@ -33,5 +33,15 @@ window.BLOG_POSTS = [
     "title": "Grand Prix du Jury 8e Concours littéraire international Amilcare Solferini — Turin, Italie",
     "image": "assets/blog/grand-prix-du-jury-8e-concours-litterair.jpg",
     "text": "2025\nGrand Prix du Jury\n8e Concours littéraire international Amilcare Solferini — Turin, Italie"
+  },
+  {
+    "id": "grand-prix-du-jury",
+    "date": "2025-11-29",
+    "type": "video",
+    "lang": "fr",
+    "title": "Grand Prix du Jury",
+    "image": "",
+    "video": "ZKXTbiQYhGo",
+    "text": "2nd Concours Littéraire Amilcare Solfeini  Turin 2025"
   }
 ];
