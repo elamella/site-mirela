@@ -24,5 +24,14 @@ window.BLOG_POSTS = [
     "title": "Grand Finale -Bosnie-Herzégovine",
     "image": "assets/blog/grand-finale-bosnie-herzegovine.jpg",
     "text": "9th International Poetry Contest"
+  },
+  {
+    "id": "grand-prix-du-jury-8e-concours-litterair",
+    "date": "2026-11-18",
+    "type": "photo",
+    "lang": "fr",
+    "title": "Grand Prix du Jury 8e Concours littéraire international Amilcare Solferini — Turin, Italie",
+    "image": "assets/blog/grand-prix-du-jury-8e-concours-litterair.jpg",
+    "text": "2025\nGrand Prix du Jury\n8e Concours littéraire international Amilcare Solferini — Turin, Italie"
   }
 ];
