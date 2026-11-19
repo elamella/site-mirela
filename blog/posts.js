@@ -42,6 +42,6 @@ window.BLOG_POSTS = [
     "title": "Grand Prix du Jury",
     "image": "",
     "video": "ZKXTbiQYhGo",
-    "text": "2nd Concours Littéraire Amilcare Solfeini  Turin 2025"
+    "text": "2nd Concours Littéraire Amilcare Solferini  Turin 2025"
   }
 ];
