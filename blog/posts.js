@@ -43,5 +43,15 @@ window.BLOG_POSTS = [
     "image": "",
     "video": "ZKXTbiQYhGo",
     "text": "2nd Concours Littéraire Amilcare Solferini  Turin 2025"
+  },
+  {
+    "id": "l-hiver-dans-le-triste-parc",
+    "date": "2025-11-22",
+    "type": "video",
+    "lang": "fr",
+    "title": "L'hiver dans le triste parc",
+    "image": "",
+    "video": "s0RN0OtzNO8",
+    "text": "Dimri në parkun e trishtuar\n\nNë parkun e trishtuar pemët janë zhveshur\ne ftohtë kanë netëve të dimrit\nhëna refl ekton mbi liqen lakuriqësine e trungjeve\npikat e shiut përhapen si rudhat.\nNdonjëherë dielli përshëndet ndrojtur mëngjeseve\nparkun e përgjumur në ëndrra të trazuara\nprej rrezeve aq gjatë munguar,\nndërsa trumcakëve,\nu mungon foleja e gjetheve,\nstolave\nmonologjet e njerëzve\ndhe natyrës\ndëbora, e humbur mes reve.\n\n@Mirela Leka Xhava"
   }
 ];
